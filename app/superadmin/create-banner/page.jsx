@@ -3,13 +3,20 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import axios from 'axios'
 import Image from 'next/image'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { toast } from 'sonner'
-
+import Autoplay from "embla-carousel-autoplay"
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel"
 const page = () => {
      const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(null);
-
+const [bannerImages, setbannerImages] = useState([])
   const handleFileChange = (e) => {
     const file = e.target.files?.[0] || null;
     setImage(file);
@@ -43,6 +50,22 @@ try {
       alert("Error uploading banner");
     }
   }
+
+
+  const fetchBannerImage = async () => {
+    try {
+      const resp = await axios.get('/api/landingpage/getallbannerimage')
+      if(resp?.data?.getAllBannerImage){
+        setbannerImages(resp?.data?.getAllBannerImage)
+      }
+    } catch (error) {
+      console.log('Server error')
+    }
+  }
+  useEffect(() => {
+    fetchBannerImage()
+  }, [])
+
   return (
     <div>
        <div className="w-full max-w-sm gap-3 flex items-center">
@@ -71,6 +94,37 @@ try {
        <button onClick={handleUpload} className="mt-4 px-4 py-2 bg-blue-500 text-white rounded">
         Upload Banner
       </button>
+
+      <div className="w-full flex items-center justify-center">
+ <div className="w-[90%] my-2">
+  <div><h2>Total Banner Images : {bannerImages?.length}</h2></div>
+   <Carousel  
+   opts={{
+    align: "start",
+    loop: true,
+  }}
+   plugins={[
+        Autoplay({
+          delay: 5000,
+        }),
+      ]}>
+  <CarouselContent className='text-white'>
+
+    {
+      bannerImages?.map((e)=>(
+       
+          <CarouselItem  key={e?._id} className="relative w-full h-72" ><Image src={e?.bannerimage}  alt="Banner Image" fill  className="object-contain maskim rounded-lg"  /></CarouselItem>
+
+      
+      ))
+    }
+   
+  </CarouselContent>
+  {/* <CarouselPrevious />
+  <CarouselNext /> */}
+</Carousel>
+ </div>
+</div>
     </div>
    
   )

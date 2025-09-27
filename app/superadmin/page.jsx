@@ -18,9 +18,15 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar"
+import { useEffect } from "react"
 
 export default function page() {
-  const {handleLogout} = useWholeApp()
+  const {handleLogout, fetchAllTeachersOnly,fetchAllStudentsOnly,} = useWholeApp()
+  useEffect(() => {
+   fetchAllTeachersOnly()
+            fetchAllStudentsOnly()
+  }, [])
+  
   return (
  <div className="">
     <div className="">

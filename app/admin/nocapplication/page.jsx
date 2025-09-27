@@ -11,28 +11,29 @@ import React, { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
 const page = () => {
-  const { userId } = useWholeApp()
-  const [nocRequest, setnocRequest] = useState([])
+  const { userId,fetchNocRequest , nocRequest,setnocRequest} = useWholeApp()
+
   const pathname = usePathname()
 const [loading, setloading] = useState(true)
-  const fetchNocRequest = async () => {
-    if (userId?.id) {
-      const resp = await axios.get(`/api/noc/getnocrequestforcordinatorteacher/${userId?.id}`)
-      setnocRequest(resp?.data)
-      setloading(false)
-    }
-  }
+  // const fetchNocRequest = async () => {
+  //   if (userId?.id) {
+  //     const resp = await axios.get(`/api/noc/getnocrequestforcordinatorteacher/${userId?.id}`)
+  //     setnocRequest(resp?.data)
+  //     setloading(false)
+  //   }
+  // }
   useEffect(() => {
     if (userId?.id) {
-      fetchNocRequest()
+      fetchNocRequest(userId?.id)
+      setloading(false)
     }
   }, [userId,pathname])
   
-  const yu = nocRequest?.nocs?.filter((e) => (
-    e?.approvedornotbyteacher === 'Pending'
-  ))
-  // const pend = yu.map((e)=>e)
-  // console.log(yu?.length)
+  // const yu = nocRequest?.nocs?.filter((e) => (
+  //   e?.approvedornotbyteacher === 'Pending'
+  // ))
+  // const pend = yu?.map((e)=>e)
+  // console.log(pend)
 
 const handleApprove = async (id) => {
   try {

@@ -24,6 +24,7 @@ export const WholeAppProvider = ({ children }) => {
     const [totalPages, settotalPages] = useState(1)
     const [sessionYear, setsessionYear] = useState('')
     const [sessionHalf, setsessionHalf] = useState('')
+
     // Get UserId
     useEffect(() => {
         const userId = async () => {
@@ -113,7 +114,7 @@ export const WholeAppProvider = ({ children }) => {
         }
     };
 
-
+// Fetch All Teachers Only
     const fetchAllTeachersOnly = async () => {
         try {
             const resp = await axios.get('/api/auth/getallteacher')
@@ -125,11 +126,7 @@ export const WholeAppProvider = ({ children }) => {
     }
 
 
-    useEffect(() => {
-        fetchAllTeachersOnly()
-        fetchAllStudentsOnly()
 
-    }, [userId])
 
     // Fetch All Students Only with Specific Department
     useEffect(() => {
@@ -147,22 +144,24 @@ export const WholeAppProvider = ({ children }) => {
                 console.error(error)
             }
         }
-        fetchAllStudentsOnlyWithSpecificDepartment()
+        // fetchAllStudentsOnlyWithSpecificDepartment()
     }, [userId, fetchedUserData, pathname])
 
 
-    const fetchNocRequest = async () => {
-        if (userId?.id) {
-            const resp = await axios.get(`/api/noc/getnocrequestforcordinatorteacher/${userId?.id}`)
+    const fetchNocRequest = async (CordinatorId) => {
+        if (CordinatorId) {
+            const resp = await axios.get(`/api/noc/getnocrequestforcordinatorteacher/${CordinatorId}`)
             setnocRequest(resp?.data)
 
         }
     }
-    useEffect(() => {
-        if (userId?.id) {
-            fetchNocRequest()
-        }
-    }, [userId])
+ 
+useEffect(() => {
+    if(userId?.id){
+
+        fetchNocRequest(userId?.id)
+    }
+}, [userId?.id])
 
     const pendingNOtificationNumber = nocRequest?.nocs?.filter((e) => (
         e?.approvedornotbyteacher === 'Pending'
@@ -207,15 +206,16 @@ export const WholeAppProvider = ({ children }) => {
 
 
 
-    console.log(fetchedUserData?.user)
-    console.log(sessionHalf)
-    console.log(sessionYear)
+    // console.log(fetchedUserData?.user)
+    // console.log(sessionHalf)
+    // console.log(sessionYear)
     // console.log(userId)
-    console.log(internshipDatawithFiltration)
+    // console.log(internshipDatawithFiltration)
     // console.log(allTeacherDataOnly)
     // console.log(allStudentData)
     // console.log(allStudentDeptSpecific)
     // console.log(getUserbyId)
+
     return (
         <AuthContext.Provider value={{
             userId,
@@ -223,6 +223,7 @@ export const WholeAppProvider = ({ children }) => {
             setallTeacherDataOnly,
             allTeacherDataOnly,
             fetchAllTeachersOnly,
+            fetchAllStudentsOnly,
             setfetchedUserData,
             allStudentData,
             handleLogout,
@@ -237,7 +238,11 @@ export const WholeAppProvider = ({ children }) => {
             internshipDatawithFiltration,
             totalPages,
             setsessionYear,
-            setsessionHalf
+            setsessionHalf,
+            fetchNocRequest,
+            nocRequest,
+            setnocRequest,
+          
         }}>
             {children}
         </AuthContext.Provider>
