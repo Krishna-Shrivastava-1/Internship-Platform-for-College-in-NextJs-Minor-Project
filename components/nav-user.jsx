@@ -29,12 +29,13 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
+import { useWholeApp } from "./AuthContextAPI"
 
 export function NavUser({
   user
 }) {
   const { isMobile } = useSidebar()
-
+const {handleLogout} = useWholeApp()
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -94,7 +95,7 @@ export function NavUser({
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem className='cursor-pointer select-none' onClick={handleLogout} variant="destructive">
               <LogOut />
               Log out
             </DropdownMenuItem>

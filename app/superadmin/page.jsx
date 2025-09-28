@@ -31,7 +31,7 @@ export default function page() {
  <div className="">
     <div className="">
       <h1 className="font-semibold text-lg mx-3">All Teachers</h1>
-      <Button variant={'destructive'} onClick={handleLogout}>Logout</Button>
+ 
        <div className='w-full flex items-center justify-center '>
                <div className='w-[95%] overflow-x-hidden'>
                  <TeacherTable />

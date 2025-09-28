@@ -9,9 +9,24 @@ import { Loader2 } from 'lucide-react'
 import { usePathname } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import { toast } from 'sonner'
-
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 const page = () => {
-  const { userId,fetchNocRequest , nocRequest,setnocRequest} = useWholeApp()
+  const { userId,fetchNocRequest , nocRequest,setnocRequest, setnocRequestPages, setnocRequestLimit,nocRequestLimit,nocRequestPages} = useWholeApp()
 
   const pathname = usePathname()
 const [loading, setloading] = useState(true)
@@ -28,6 +43,20 @@ const [loading, setloading] = useState(true)
       setloading(false)
     }
   }, [userId,pathname])
+  // console.log(nocRequest?.totalPages)
+   const handlePageNext = ()=>{
+      if(nocRequestPages < nocRequest?.totalPages){
+
+        setnocRequestPages((e)=>e+1)
+      }
+    }
+    const handlePagePrev = ()=>{
+      if(nocRequestPages >1){
+
+        setnocRequestPages((e)=>e-1)
+      }
+    }
+
   
   // const yu = nocRequest?.nocs?.filter((e) => (
   //   e?.approvedornotbyteacher === 'Pending'
@@ -69,8 +98,14 @@ const handleNotApprove = async (id) => {
   }
 };
 
+const setnocRequestLimitChanger = (newValue) => {
+ 
+    setnocRequestLimit(newValue);
+   
+  };
+
   return (
-    <div>
+    <div className='m-2 mx-3'>
     {
       loading?
        <div className='w-full h-[60vh] flex justify-center items-center'>
@@ -151,7 +186,38 @@ const handleNotApprove = async (id) => {
         </TableBody>
       </Table>
     }
-     
+    <div className='flex items-center justify-end w-full pr-4 gap-x-4 '>
+      <Select  value={nocRequestLimit.toString()} onValueChange={setnocRequestLimitChanger}>
+  <SelectTrigger className="w-[70px]">
+    <SelectValue  placeholder="Limit" />
+  </SelectTrigger>
+  <SelectContent className='dark'>
+    <SelectItem value="10">10</SelectItem>
+    <SelectItem value="30">30</SelectItem>
+    <SelectItem value="50">50</SelectItem>
+  </SelectContent>
+</Select>
+ <div>
+   <Pagination >
+  <PaginationContent>
+    <PaginationItem onClick={handlePagePrev}>
+      <PaginationPrevious className='cursor-pointer select-none' />
+    </PaginationItem>
+    <PaginationItem>
+      <PaginationLink >{nocRequestPages}</PaginationLink>
+    </PaginationItem>
+    {/* <PaginationItem>
+      <PaginationEllipsis />
+    </PaginationItem> */}
+    <PaginationItem onClick={handlePageNext}>
+      <PaginationNext className='cursor-pointer select-none' />
+    </PaginationItem>
+  </PaginationContent>
+</Pagination>
+ </div>
+    </div>
+   
+
 
     </div>
   )

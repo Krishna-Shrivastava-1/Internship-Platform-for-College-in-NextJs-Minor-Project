@@ -64,7 +64,7 @@ const page = () => {
         
     }
 
-    console.log(role.toLowerCase())
+    // console.log(role.toLowerCase())
     // console.log(Department)
     return (
         <div>

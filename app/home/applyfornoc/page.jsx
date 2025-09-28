@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import axios from 'axios'
+import { Loader2 } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
@@ -39,12 +40,12 @@ const page = () => {
     }
 
   return (
-    <div>
+    <div className='m-2 mx-3'>
       <h1>Select Internship for NOC Apply</h1>
       {
         loading ?
-        <div>
-         <Skeleton className='w-full h-44' />
+        <div className='w-full flex items-center justify-center'>
+         <Loader2 className='animate-spin' />
         </div>
         :
         fetchedUserData?.user?.internshipDetails?.length>0?

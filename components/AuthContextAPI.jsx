@@ -24,10 +24,11 @@ export const WholeAppProvider = ({ children }) => {
     const [totalPages, settotalPages] = useState(1)
     const [sessionYear, setsessionYear] = useState('')
     const [sessionHalf, setsessionHalf] = useState('')
-
+const [nocRequestPages, setnocRequestPages] = useState(1)
+const [nocRequestLimit, setnocRequestLimit] = useState(10)
     // Get UserId
     useEffect(() => {
-        const userId = async () => {
+        const userIdfunc = async () => {
             try {
                 const respo = await axios.get('/api/auth/user')
 
@@ -38,8 +39,10 @@ export const WholeAppProvider = ({ children }) => {
 
             }
         }
-        userId()
-    }, [pathname])
+        if (!userId) {
+        userIdfunc();
+    }
+    }, [pathname,userId])
 
     // Get Current User Data From ID
     useEffect(() => {
@@ -150,7 +153,7 @@ export const WholeAppProvider = ({ children }) => {
 
     const fetchNocRequest = async (CordinatorId) => {
         if (CordinatorId) {
-            const resp = await axios.get(`/api/noc/getnocrequestforcordinatorteacher/${CordinatorId}`)
+            const resp = await axios.get(`/api/noc/getnocrequestforcordinatorteacher/${CordinatorId}?page=${nocRequestPages}&limit=${nocRequestLimit}`)
             setnocRequest(resp?.data)
 
         }
@@ -161,7 +164,7 @@ useEffect(() => {
 
         fetchNocRequest(userId?.id)
     }
-}, [userId?.id])
+}, [userId?.id,nocRequestPages,nocRequestLimit])
 
     const pendingNOtificationNumber = nocRequest?.nocs?.filter((e) => (
         e?.approvedornotbyteacher === 'Pending'
@@ -242,7 +245,10 @@ useEffect(() => {
             fetchNocRequest,
             nocRequest,
             setnocRequest,
-          
+            nocRequestPages,
+          setnocRequestPages,
+          nocRequestLimit,
+          setnocRequestLimit
         }}>
             {children}
         </AuthContext.Provider>

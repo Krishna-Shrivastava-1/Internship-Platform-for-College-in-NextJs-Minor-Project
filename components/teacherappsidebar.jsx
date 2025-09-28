@@ -6,6 +6,7 @@ import {
   BookOpen,
   Bot,
   Command,
+  Dock,
   Frame,
   GalleryVerticalEnd,
   Map,
@@ -25,13 +26,22 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar"
+import { useWholeApp } from "./AuthContextAPI"
 
-// This is sample data.
+
+
+
+export function TeacherAppSidebar({
+  ...props
+}) {
+  const {fetchedUserData} = useWholeApp()
+  // console.log(fetchedUserData)
+  // This is sample data.
 const data = {
   user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
+    name: fetchedUserData?.user?.name,
+    email:fetchedUserData?.user?.email,
+    avatar: "https://github.com/shadcn.png",
   },
   teams: [
     {
@@ -39,38 +49,35 @@ const data = {
       logo: GalleryVerticalEnd,
       plan: "Enterprise",
     },
-    {
-      name: "Acme Corp.",
-      logo: AudioWaveform,
-      plan: "Startup",
-    },
-    {
-      name: "Evil Corp.",
-      logo: Command,
-      plan: "Free",
-    },
+    // {
+    //   name: "Acme Corp.",
+    //   logo: AudioWaveform,
+    //   plan: "Startup",
+    // },
+    // {
+    //   name: "Evil Corp.",
+    //   logo: Command,
+    //   plan: "Free",
+    // },
   ],
   navMain: [
-    {
-      title: "Actions",
-      // url: "#",
-      icon: SquareTerminal,
-      isActive: true,
-      items: [
+    
+        
         {
           title: "NOC Applications",
           url: "/admin/nocapplication",
+          icon:Dock
         },
-        {
-          title: "Assign Teachers",
-          url: "#",
-        },
-        {
-          title: "Banners",
-          url: "#",
-        },
+        // {
+        //   title: "Assign Teachers",
+        //   url: "#",
+        // },
+        // {
+        //   title: "Banners",
+        //   url: "#",
+        // },
       ],
-    },
+    
     // {
     //   title: "Models",
     //   url: "#",
@@ -153,12 +160,8 @@ const data = {
   //     url: "#",
   //     icon: Map,
   //   },
-  ],
-}
 
-export function TeacherAppSidebar({
-  ...props
-}) {
+}
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>

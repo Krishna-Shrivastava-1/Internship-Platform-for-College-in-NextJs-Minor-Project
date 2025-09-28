@@ -14,6 +14,8 @@ import {
 import { useEffect, useState } from "react";
 import axios from "axios";
 import SplitText from "@/components/SplitText";
+import FadeContent from "@/components/FadeContent";
+import TextType from "@/components/TextType";
 export default function Home() {
 const [bannerImages, setbannerImages] = useState([])
   const fetchBannerImage = async () => {
@@ -38,21 +40,18 @@ const [bannerImages, setbannerImages] = useState([])
 <div className="w-full flex items-center justify-center ">
 
 <div className="mt-6  text-center">
-  <SplitText
-  text="One Platform for All Your Internship & NOC Needs."
-  className="text-3xl font-semibold text-center text-white text-balance"
-  delay={50}
-  duration={0.2}
-  ease="power3.out"
-  splitType="chars"
-  from={{ opacity: 0, y: 40 }}
-  to={{ opacity: 1, y: 0 }}
-  threshold={0.1}
-  rootMargin="-100px"
-  textAlign="center"
-
+<FadeContent blur={true} duration={800} easing="ease-out" initialOpacity={0}>
+<h1 className="text-3xl font-semibold text-center text-white text-balance">One Platform for All Your Internship & NOC Needs.</h1>
+</FadeContent>
+<TextType
+  text={["Submit internships, upload offer letters,", "Request for NOCs", "and track approvals — simple and secure."]}
+  typingSpeed={75}
+  pauseDuration={1500}
+  showCursor={true}
+  className="text-white text-xl font-semibold"
+  cursorCharacter="|"
 />
-  <SplitText
+  {/* <SplitText
   text="Submit internships, upload offer letters, request NOCs, and track approvals — simple and secure."
   className="text-xl font-semibold text-center text-white text-balance"
   delay={50}
@@ -65,7 +64,8 @@ const [bannerImages, setbannerImages] = useState([])
   rootMargin="-100px"
   textAlign="center"
 
-/>
+/> */}
+
 </div>
  {/* <div className="w-[90%] my-2">
    <Carousel  

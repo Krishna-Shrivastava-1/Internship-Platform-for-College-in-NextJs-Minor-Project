@@ -20,18 +20,8 @@ const page = () => {
    }
   }, [fetchedUserData])
   
-  console.log(fetchedUserData?.user?.internshipDetails)
-   const handleLogout = async () => {
-        try {
-            await axios.post("/api/auth/logout");
-            setfetchedUserData(null);
-             
-           window.location.href = "/login"
-       
-        } catch (error) {
-            console.error("Logout failed:", error);
-        }
-    };
+  // console.log(fetchedUserData?.user?.internshipDetails)
+  
 
  
   return (
@@ -45,7 +35,7 @@ const page = () => {
 <div>
    <h1 className='text-white text-center font-semibold text-2xl'>Hi, {fetchedUserData?.user?.name}</h1>
       <h1 className='text-white text-center font-semibold text-xl'>Department of {fetchedUserData?.user?.department}</h1>
-      <Button onClick={handleLogout} variant='destructive'>Logout</Button>
+      {/* <Button onClick={handleLogout} variant='destructive'>Logout</Button> */}
       <div className="px-4">
   
       <StudentInternsipDataTable studentInternData={fetchedUserData?.user?.internshipDetails} />

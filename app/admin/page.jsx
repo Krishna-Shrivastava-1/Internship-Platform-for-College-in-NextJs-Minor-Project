@@ -10,18 +10,18 @@ import { useRouter } from 'next/navigation'
 import React from 'react'
 
 const page = () => {
-  const {fetchedUserData ,handleLogout} = useWholeApp()
+  const {fetchedUserData } = useWholeApp()
   
    
  
   return (
-    <div>
+    <div className='m-2 mx-3'>
       {
         fetchedUserData && fetchedUserData?.user ?
         <div>
  <h1 className='text-white text-center font-semibold text-2xl'>Hi, {fetchedUserData?.user?.name}</h1>
       <h1 className='text-white text-center font-semibold text-xl'>Department of {fetchedUserData?.user?.department}</h1>
-          <Button onClick={handleLogout} variant='destructive'>Logout</Button>
+ 
   <div className="">
       <h1 className="font-semibold text-lg">All Students with Only Internship</h1>
 

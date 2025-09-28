@@ -209,7 +209,7 @@ export const columns = [
         enableHiding: false,
         cell: ({ row }) => {
             const internship = row.original;
-            console.log(internship)
+            // console.log(internship)
             const [companyName, setCompanyName] = React.useState(internship?.companyName || "");
             const [semester, setSemester] = React.useState(internship?.semester?.toString() || "");
             const [year, setYear] = React.useState(internship?.year?.toString() || "");

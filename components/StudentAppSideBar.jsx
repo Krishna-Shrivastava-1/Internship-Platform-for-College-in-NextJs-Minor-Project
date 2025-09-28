@@ -6,10 +6,12 @@ import {
   BookOpen,
   Bot,
   Command,
+  Dock,
   Frame,
   GalleryVerticalEnd,
   Map,
   PieChart,
+  ReceiptText,
   Settings2,
   SquareTerminal,
 } from "lucide-react"
@@ -25,13 +27,18 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar"
+import { useWholeApp } from "./AuthContextAPI"
 
-// This is sample data.
-const data = {
+
+export function StudentAppSidebar({
+  ...props
+}) {
+const {fetchedUserData} = useWholeApp()
+  const data = {
   user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
+    name: fetchedUserData?.user?.name,
+    email:fetchedUserData?.user?.email,
+    avatar: "https://github.com/shadcn.png",
   },
   teams: [
     {
@@ -39,126 +46,42 @@ const data = {
       logo: GalleryVerticalEnd,
       plan: "Enterprise",
     },
-    {
-      name: "Acme Corp.",
-      logo: AudioWaveform,
-      plan: "Startup",
-    },
-    {
-      name: "Evil Corp.",
-      logo: Command,
-      plan: "Free",
-    },
+    // {
+    //   name: "Acme Corp.",
+    //   logo: AudioWaveform,
+    //   plan: "Startup",
+    // },
+    // {
+    //   name: "Evil Corp.",
+    //   logo: Command,
+    //   plan: "Free",
+    // },
   ],
   navMain: [
-    {
-      title: "Actions",
-      // url: "#",
-      icon: SquareTerminal,
-      isActive: true,
-      items: [
-        {
+    
+        
+       {
           title: "Applied NOC",
           url: "/home/applyfornoc",
+          icon:Dock
         },
         {
           title: "Enter Internship Detail",
           url: "/home/internship-form",
+          icon:ReceiptText
         },
-        {
-          title: "Banners",
-          url: "#",
-        },
+        // {
+        //   title: "Assign Teachers",
+        //   url: "#",
+        // },
+        // {
+        //   title: "Banners",
+        //   url: "#",
+        // },
       ],
-    },
-    // {
-    //   title: "Models",
-    //   url: "#",
-    //   icon: Bot,
-    //   items: [
-    //     {
-    //       title: "Genesis",
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "Explorer",
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "Quantum",
-    //       url: "#",
-    //     },
-    //   ],
-    // },
-    // {
-    //   title: "Documentation",
-    //   url: "#",
-    //   icon: BookOpen,
-    //   items: [
-    //     {
-    //       title: "Introduction",
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "Get Started",
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "Tutorials",
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "Changelog",
-    //       url: "#",
-    //     },
-    //   ],
-    // },
-  //   {
-  //     title: "Settings",
-  //     url: "#",
-  //     icon: Settings2,
-  //     items: [
-  //       {
-  //         title: "General",
-  //         url: "#",
-  //       },
-  //       {
-  //         title: "Team",
-  //         url: "#",
-  //       },
-  //       {
-  //         title: "Billing",
-  //         url: "#",
-  //       },
-  //       {
-  //         title: "Limits",
-  //         url: "#",
-  //       },
-  //     ],
-  //   },
-  // ],
-  // projects: [
-  //   {
-  //     name: "Design Engineering",
-  //     url: "#",
-  //     icon: Frame,
-  //   },
-  //   {
-  //     name: "Sales & Marketing",
-  //     url: "#",
-  //     icon: PieChart,
-  //   },
-  //   {
-  //     name: "Travel",
-  //     url: "#",
-  //     icon: Map,
-  //   },
-  ],
-}
+    
 
-export function StudentAppSidebar({
-  ...props
-}) {
+}
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>

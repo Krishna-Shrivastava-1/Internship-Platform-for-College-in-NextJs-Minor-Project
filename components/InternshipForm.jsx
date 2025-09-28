@@ -38,14 +38,14 @@ const years = Array.from({ length: 3 }, (_, i) => currentYear - 2 + i)
       [name]: value
     }))
   }
-console.log(session)
+// console.log(session)
 
 
 
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    console.log("Form Submitted:", formData)
+    // console.log("Form Submitted:", formData)
     try {
   const year = Number(formData?.year)
     const semester = Number(formData?.semester)
@@ -112,8 +112,8 @@ sessionYear:''
     }
   }
 
-  console.log("Form:", formData)
-  console.log("File",file)
+  // console.log("Form:", formData)
+  // console.log("File",file)
   return (
     // <div className="max-w-2xl mx-auto mt-10 p-6 bg-white shadow-md rounded-xl">
     //   <h2 className="text-xl font-semibold mb-4">Internship Details</h2>
@@ -390,7 +390,7 @@ sessionYear:''
       </div>
 
        <div className=" w-full max-w-sm  gap-3 flex items-center ">
-                      <Label className='text-lg text-wrap' htmlFor="picture">Select Offer Letter in PDF Format</Label>
+                      <Label className='text-md text-wrap' htmlFor="picture">Select Offer Letter in PDF Format</Label>
                       <Input
                         required
                         id='picture'
@@ -402,7 +402,7 @@ sessionYear:''
 
         {/* Stipend */}
         <div>
-          <label className="block mb-1 font-medium">Stipend</label>
+          <label className="block mb-1 font-medium">Stipend (in Rs.)</label>
           <Input
             type="number"
             name="stipend"
