@@ -24,9 +24,9 @@ export const WholeAppProvider = ({ children }) => {
     const [totalPages, settotalPages] = useState(1)
     const [sessionYear, setsessionYear] = useState('')
     const [sessionHalf, setsessionHalf] = useState('')
-const [nocRequestPages, setnocRequestPages] = useState(1)
-const [nocRequestLimit, setnocRequestLimit] = useState(10)
-const [internshipForAllStudentAsPerDeptLimit, setinternshipForAllStudentAsPerDeptLimit] = useState(10)
+    const [nocRequestPages, setnocRequestPages] = useState(1)
+    const [nocRequestLimit, setnocRequestLimit] = useState(10)
+    const [internshipForAllStudentAsPerDeptLimit, setinternshipForAllStudentAsPerDeptLimit] = useState(10)
     // Get UserId
     useEffect(() => {
         const userIdfunc = async () => {
@@ -41,9 +41,9 @@ const [internshipForAllStudentAsPerDeptLimit, setinternshipForAllStudentAsPerDep
             }
         }
         if (!userId) {
-        userIdfunc();
-    }
-    }, [pathname,userId])
+            userIdfunc();
+        }
+    }, [pathname, userId])
 
     // Get Current User Data From ID
     useEffect(() => {
@@ -105,20 +105,24 @@ const [internshipForAllStudentAsPerDeptLimit, setinternshipForAllStudentAsPerDep
 
 
     // Logout Route
-  const handleLogout = async () => {
+const handleLogout = async () => {
   try {
-    await axios.post("/api/auth/logout"); // must clear cookie
-     setfetchedUserData(null);
+    await axios.post("/api/auth/logout"); // clears cookie
+
+    // Clear local state
+    setfetchedUserData(null);
     setuserId(null);
-    
-    router.replace("/login");
-  } catch (error) {
-    console.error("Logout failed:", error);
+
+    // Redirect to login (or landing page)
+    window.location.href = '/login'; // reloads page and triggers AuthGuard
+  } catch (err) {
+    console.error("Logout failed:", err);
   }
 };
 
 
-// Fetch All Teachers Only
+
+    // Fetch All Teachers Only
     const fetchAllTeachersOnly = async () => {
         try {
             const resp = await axios.get('/api/auth/getallteacher')
@@ -159,13 +163,13 @@ const [internshipForAllStudentAsPerDeptLimit, setinternshipForAllStudentAsPerDep
 
         }
     }
- 
-useEffect(() => {
-    if(userId?.id){
 
-        fetchNocRequest(userId?.id)
-    }
-}, [userId?.id,nocRequestPages,nocRequestLimit])
+    useEffect(() => {
+        if (userId?.id) {
+
+            fetchNocRequest(userId?.id)
+        }
+    }, [userId?.id, nocRequestPages, nocRequestLimit])
 
     const pendingNOtificationNumber = nocRequest?.nocs?.filter((e) => (
         e?.approvedornotbyteacher === 'Pending'
@@ -206,7 +210,7 @@ useEffect(() => {
         if (userId && fetchedUserData?.user?.department) {
             fetchinternshipdatawithquery()
         }
-    }, [userId, fetchedUserData, year, semester, page, sessionHalf, sessionYear,internshipForAllStudentAsPerDeptLimit])
+    }, [userId, fetchedUserData, year, semester, page, sessionHalf, sessionYear, internshipForAllStudentAsPerDeptLimit])
 
 
 
@@ -247,11 +251,11 @@ useEffect(() => {
             nocRequest,
             setnocRequest,
             nocRequestPages,
-          setnocRequestPages,
-          nocRequestLimit,
-          setnocRequestLimit,
-          internshipForAllStudentAsPerDeptLimit,
-          setinternshipForAllStudentAsPerDeptLimit
+            setnocRequestPages,
+            nocRequestLimit,
+            setnocRequestLimit,
+            internshipForAllStudentAsPerDeptLimit,
+            setinternshipForAllStudentAsPerDeptLimit
         }}>
             {children}
         </AuthContext.Provider>

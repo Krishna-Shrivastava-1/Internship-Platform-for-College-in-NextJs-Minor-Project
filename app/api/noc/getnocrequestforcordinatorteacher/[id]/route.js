@@ -7,7 +7,7 @@ import { internshipModel } from "@/models/Internship";
 
 export async function GET(req, { params }) {
   try {
-    const { id } = params; // teacher ID
+    const { id } =await params; // teacher ID
     await database();
     const { searchParams } = new URL(req.url)
     const page = parseInt(searchParams.get('page') || 1)

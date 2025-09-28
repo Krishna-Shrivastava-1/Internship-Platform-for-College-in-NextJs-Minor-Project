@@ -35,7 +35,7 @@ export function TeacherAppSidebar({
   ...props
 }) {
   const {fetchedUserData} = useWholeApp()
-  // console.log(fetchedUserData)
+  console.log(fetchedUserData)
   // This is sample data.
 const data = {
   user: {
