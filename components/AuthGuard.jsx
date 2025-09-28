@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 const AuthGuard = () => {
   const router = useRouter();
   const pathname = usePathname();
-  const { fetchedUserData,userId } = useWholeApp();
+  const { fetchedUserData } = useWholeApp();
 
   const [token, setToken] = useState(undefined); // undefined = still checking
 
@@ -23,7 +23,7 @@ const AuthGuard = () => {
       }
     };
     fetchAuthorizeToken();
-  }, [pathname,userId]);
+  }, [pathname]);
 
   useEffect(() => {
     if (token === undefined || fetchedUserData === null) return; // still checking

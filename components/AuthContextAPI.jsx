@@ -108,9 +108,10 @@ const [internshipForAllStudentAsPerDeptLimit, setinternshipForAllStudentAsPerDep
   const handleLogout = async () => {
   try {
     await axios.post("/api/auth/logout"); // must clear cookie
-    setfetchedUserData(null);
+     setfetchedUserData(null);
     setuserId(null);
-    router.replace("/login"); // ⬅️ replace instead of push
+    
+    router.replace("/login");
   } catch (error) {
     console.error("Logout failed:", error);
   }
