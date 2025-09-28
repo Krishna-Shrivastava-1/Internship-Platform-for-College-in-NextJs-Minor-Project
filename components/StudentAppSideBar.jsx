@@ -65,7 +65,7 @@ export function StudentAppSidebar(props) {
         <TeamSwitcher teams={data.teams} />
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
+        <NavMain items={data.navMain} role={fetchedUserData?.user?.role} />
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={data.user} />
