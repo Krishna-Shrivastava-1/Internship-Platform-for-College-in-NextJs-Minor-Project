@@ -45,8 +45,8 @@ const AuthGuard = () => {
     }
 
     // Role-based protection
-    if (role === 'student' && pathname.startsWith('/admin')) router.replace('/home')
-    if (role === 'teacher' && pathname.startsWith('/home')) router.replace('/admin')
+    if (role === 'student' && pathname.startsWith('/admin') || pathname.startsWith('/superadmin'))  router.replace('/home')
+    if (role === 'teacher' && pathname.startsWith('/home') || pathname.startsWith('/superadmin')) router.replace('/admin')
     if (role === 'superadmin' && (pathname.startsWith('/home') || pathname.startsWith('/admin')))
       router.replace('/superadmin')
 
