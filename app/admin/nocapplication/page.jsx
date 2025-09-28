@@ -103,7 +103,7 @@ const setnocRequestLimitChanger = (newValue) => {
     setnocRequestLimit(newValue);
    
   };
-
+console.log(nocRequest)
   return (
     <div className='m-2 mx-3'>
     {
@@ -206,9 +206,10 @@ const setnocRequestLimitChanger = (newValue) => {
     <PaginationItem>
       <PaginationLink >{nocRequestPages}</PaginationLink>
     </PaginationItem>
-    {/* <PaginationItem>
+    <PaginationItem className='flex items-center'>
       <PaginationEllipsis />
-    </PaginationItem> */}
+      <PaginationLink >{nocRequest?.totalPages}</PaginationLink>
+    </PaginationItem>
     <PaginationItem onClick={handlePageNext}>
       <PaginationNext className='cursor-pointer select-none' />
     </PaginationItem>

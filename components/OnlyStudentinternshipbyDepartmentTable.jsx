@@ -22,7 +22,7 @@ import { useWholeApp } from './AuthContextAPI'
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from './ui/select'
 const OnlyStudentinternshipbyDepartmentTable = () => {
     // console.log(dat)
-const {internshipDatawithFiltration,setsemester,semester,page,setpage,totalPages,setsessionYear,setsessionHalf} = useWholeApp()
+const {internshipDatawithFiltration,setsemester,semester,page,setpage,totalPages,setsessionYear,setsessionHalf,internshipForAllStudentAsPerDeptLimit,setinternshipForAllStudentAsPerDeptLimit} = useWholeApp()
     
     // console.log(totalPages)
     const handlePageNext = ()=>{
@@ -37,7 +37,11 @@ const {internshipDatawithFiltration,setsemester,semester,page,setpage,totalPages
         setpage((e)=>e-1)
       }
     }
-
+const setnocRequestLimitChanger = (newValue) => {
+ 
+    setinternshipForAllStudentAsPerDeptLimit(newValue);
+   
+  };
     const currentYear = new Date().getFullYear();
 const years = Array.from({ length: 6 }, (_, i) => currentYear - 2 + i)
     // console.log(page)
@@ -142,7 +146,19 @@ const years = Array.from({ length: 6 }, (_, i) => currentYear - 2 + i)
   
   </TableBody>
 </Table>
-<Pagination>
+<div  className='flex items-center justify-end w-full pr-4 gap-x-4 '>
+   <Select  value={internshipForAllStudentAsPerDeptLimit.toString()} onValueChange={setnocRequestLimitChanger}>
+  <SelectTrigger className="w-[70px]">
+    <SelectValue  placeholder="Limit" />
+  </SelectTrigger>
+  <SelectContent className='dark'>
+    <SelectItem value="10">10</SelectItem>
+    <SelectItem value="30">30</SelectItem>
+    <SelectItem value="50">50</SelectItem>
+  </SelectContent>
+</Select>
+<div>
+  <Pagination>
   <PaginationContent>
     <PaginationItem onClick={handlePagePrev}>
       <PaginationPrevious  />
@@ -150,14 +166,18 @@ const years = Array.from({ length: 6 }, (_, i) => currentYear - 2 + i)
     <PaginationItem>
       <PaginationLink >{page}</PaginationLink>
     </PaginationItem>
-    {/* <PaginationItem>
+    <PaginationItem className='flex items-center'>
       <PaginationEllipsis />
-    </PaginationItem> */}
+      <PaginationLink >{totalPages}</PaginationLink>
+    </PaginationItem>
     <PaginationItem onClick={handlePageNext}>
       <PaginationNext />
     </PaginationItem>
   </PaginationContent>
 </Pagination>
+</div>
+</div>
+  
     </div>
   )
 }

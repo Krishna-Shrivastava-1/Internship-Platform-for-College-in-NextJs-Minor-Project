@@ -26,6 +26,7 @@ export const WholeAppProvider = ({ children }) => {
     const [sessionHalf, setsessionHalf] = useState('')
 const [nocRequestPages, setnocRequestPages] = useState(1)
 const [nocRequestLimit, setnocRequestLimit] = useState(10)
+const [internshipForAllStudentAsPerDeptLimit, setinternshipForAllStudentAsPerDeptLimit] = useState(10)
     // Get UserId
     useEffect(() => {
         const userIdfunc = async () => {
@@ -179,7 +180,7 @@ useEffect(() => {
                 const params = {
                     dept: fetchedUserData?.user?.department,
                     page,
-                    limit: 10,
+                    limit: internshipForAllStudentAsPerDeptLimit,
                     sessionyear: sessionYear,
                     sessionhalf: sessionHalf
                 };
@@ -204,7 +205,7 @@ useEffect(() => {
         if (userId && fetchedUserData?.user?.department) {
             fetchinternshipdatawithquery()
         }
-    }, [userId, fetchedUserData, year, semester, page, sessionHalf, sessionYear])
+    }, [userId, fetchedUserData, year, semester, page, sessionHalf, sessionYear,internshipForAllStudentAsPerDeptLimit])
 
 
 
@@ -247,7 +248,9 @@ useEffect(() => {
             nocRequestPages,
           setnocRequestPages,
           nocRequestLimit,
-          setnocRequestLimit
+          setnocRequestLimit,
+          internshipForAllStudentAsPerDeptLimit,
+          setinternshipForAllStudentAsPerDeptLimit
         }}>
             {children}
         </AuthContext.Provider>
