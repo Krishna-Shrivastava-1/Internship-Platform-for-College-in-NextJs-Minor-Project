@@ -24,7 +24,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Link from "next/link";
 
-export function NavMain({items}) {
+export function NavMain({items,role}) {
   const pathname = usePathname()
    const { pendingNOtificationNumber } = useWholeApp()
 
@@ -79,7 +79,7 @@ export function NavMain({items}) {
       <SidebarGroupContent className="flex flex-col dark gap-2">
         <SidebarMenu className='dark'>
           <SidebarMenuItem className="flex items-center gap-2">
-            <Link className="w-full" href={'/home'}>
+            <Link className="w-full" href={role === 'teacher' ? '/admin' : role === 'student' ? '/home' :'/superadmin'}>
               <SidebarMenuButton
                 tooltip="Home"
                 className={`
@@ -109,7 +109,7 @@ export function NavMain({items}) {
               : 'bg-transparent text-gray-300 hover:bg-neutral-800 relative'
                     }
                   `}>
-                   {pathname.startsWith('/admin') && pendingNOtificationNumber?.length > 0 &&   <div className={`${pathname.startsWith('/admin') && pendingNOtificationNumber?.length > 0 && 'absolute top-0 right-0 z-20 w-5 h-5 bg-blue-700 text-center rounded-full text-md'}`}>{pendingNOtificationNumber?.length}</div>}
+                   {pathname.startsWith('/admin') && pendingNOtificationNumber?.length > 0  &&   <div className={`${pathname.startsWith('/admin') && pendingNOtificationNumber?.length > 0 && 'absolute top-0 right-0 z-20 w-5 h-5 bg-blue-700 text-center rounded-full text-md'}`}>{pendingNOtificationNumber?.length}</div>}
                   {item.icon && <item.icon />}
                   <span>{item.title}</span>
                 </SidebarMenuButton>

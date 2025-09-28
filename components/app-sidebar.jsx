@@ -27,8 +27,10 @@ import {
   SidebarFooter,
   SidebarHeader,
   SidebarRail,
+  useSidebar,
 } from "@/components/ui/sidebar"
 import { useWholeApp } from "./AuthContextAPI"
+import { usePathname } from "next/navigation"
 
 
 
@@ -38,7 +40,24 @@ export function AppSidebar({
 }) {
     const {fetchedUserData} = useWholeApp()
     // console.log(fetchedUserData)
-    // This is sample data.
+   const pathname = usePathname()
+   const { setOpenMobile } = useSidebar() // mobile-specific sidebar state
+ 
+   // Close sidebar on mobile when route changes
+   React.useEffect(() => {
+     const handleClose = () => {
+       const isMobile = window.matchMedia("(max-width: 768px)").matches
+       if (isMobile) {
+         setOpenMobile(false)
+       }
+     }
+ 
+     handleClose()
+ 
+     const resizeListener = () => handleClose()
+     window.addEventListener("resize", resizeListener)
+     return () => window.removeEventListener("resize", resizeListener)
+   }, [pathname, setOpenMobile])
   const data = {
     user: {
       name: fetchedUserData?.user?.name,

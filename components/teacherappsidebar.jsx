@@ -1,180 +1,70 @@
-"use client"
+'use client'
 
 import * as React from "react"
-import {
-  AudioWaveform,
-  BookOpen,
-  Bot,
-  Command,
-  Dock,
-  Frame,
-  GalleryVerticalEnd,
-  Map,
-  PieChart,
-  Settings2,
-  SquareTerminal,
-} from "lucide-react"
-
-import { NavMain } from "@/components/nav-main"
-import { NavProjects } from "@/components/nav-projects"
-import { NavUser } from "@/components/nav-user"
+import { Dock, GalleryVerticalEnd } from "lucide-react"
+import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarRail, useSidebar } from "@/components/ui/sidebar"
 import { TeamSwitcher } from "@/components/team-switcher"
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarHeader,
-  SidebarRail,
-} from "@/components/ui/sidebar"
+import { NavMain } from "@/components/nav-main"
+import { NavUser } from "@/components/nav-user"
 import { useWholeApp } from "./AuthContextAPI"
+import { usePathname } from "next/navigation"
 
+export function TeacherAppSidebar(props) {
+  const { fetchedUserData } = useWholeApp()
+  const pathname = usePathname()
+  const { setOpenMobile } = useSidebar() // mobile-specific sidebar state
 
+  // Close sidebar on mobile when route changes
+  React.useEffect(() => {
+    const handleClose = () => {
+      const isMobile = window.matchMedia("(max-width: 768px)").matches
+      if (isMobile) {
+        setOpenMobile(false)
+      }
+    }
 
+    handleClose()
 
-export function TeacherAppSidebar({
-  ...props
-}) {
-  const {fetchedUserData} = useWholeApp()
-  console.log(fetchedUserData)
-  // This is sample data.
-const data = {
-  user: {
-    name: fetchedUserData?.user?.name,
-    email:fetchedUserData?.user?.email,
-    avatar: "https://github.com/shadcn.png",
-  },
-  teams: [
-    {
-      name: "Acme Inc",
-      logo: GalleryVerticalEnd,
-      plan: "Enterprise",
+    const resizeListener = () => handleClose()
+    window.addEventListener("resize", resizeListener)
+    return () => window.removeEventListener("resize", resizeListener)
+  }, [pathname, setOpenMobile])
+
+  const data = {
+    user: {
+      name: fetchedUserData?.user?.name,
+      email: fetchedUserData?.user?.email,
+      avatar: "https://github.com/shadcn.png",
     },
-    // {
-    //   name: "Acme Corp.",
-    //   logo: AudioWaveform,
-    //   plan: "Startup",
-    // },
-    // {
-    //   name: "Evil Corp.",
-    //   logo: Command,
-    //   plan: "Free",
-    // },
-  ],
-  navMain: [
+    teams: [
+      {
+        name: "Acme Inc",
+        logo: GalleryVerticalEnd,
+        plan: "Enterprise",
+      },
+    ],
+    navMain: [
     
-        
-        {
-          title: "NOC Applications",
-          url: "/admin/nocapplication",
-          icon:Dock
-        },
-        // {
-        //   title: "Assign Teachers",
-        //   url: "#",
-        // },
-        // {
-        //   title: "Banners",
-        //   url: "#",
-        // },
-      ],
-    
-    // {
-    //   title: "Models",
-    //   url: "#",
-    //   icon: Bot,
-    //   items: [
-    //     {
-    //       title: "Genesis",
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "Explorer",
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "Quantum",
-    //       url: "#",
-    //     },
-    //   ],
-    // },
-    // {
-    //   title: "Documentation",
-    //   url: "#",
-    //   icon: BookOpen,
-    //   items: [
-    //     {
-    //       title: "Introduction",
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "Get Started",
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "Tutorials",
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "Changelog",
-    //       url: "#",
-    //     },
-    //   ],
-    // },
-  //   {
-  //     title: "Settings",
-  //     url: "#",
-  //     icon: Settings2,
-  //     items: [
-  //       {
-  //         title: "General",
-  //         url: "#",
-  //       },
-  //       {
-  //         title: "Team",
-  //         url: "#",
-  //       },
-  //       {
-  //         title: "Billing",
-  //         url: "#",
-  //       },
-  //       {
-  //         title: "Limits",
-  //         url: "#",
-  //       },
-  //     ],
-  //   },
-  // ],
-  // projects: [
-  //   {
-  //     name: "Design Engineering",
-  //     url: "#",
-  //     icon: Frame,
-  //   },
-  //   {
-  //     name: "Sales & Marketing",
-  //     url: "#",
-  //     icon: PieChart,
-  //   },
-  //   {
-  //     name: "Travel",
-  //     url: "#",
-  //     icon: Map,
-  //   },
+      {
+        title: "NOC Applications",
+        url: "/admin/nocapplication",
+        icon: Dock,
+      },
+    ],
+  }
 
-}
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
         <TeamSwitcher teams={data.teams} />
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
-        {/* <NavProjects projects={data.projects} /> */}
+        <NavMain items={data.navMain} role={fetchedUserData?.user?.role} />
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={data.user} />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
-  );
+  )
 }
