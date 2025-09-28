@@ -12,6 +12,7 @@ import React, { useEffect, useState } from 'react'
 
 const page = () => {
   const { fetchedUserData ,setfetchedUserData } = useWholeApp()
+  
   const [loading, setloading] = useState(true)
   const router = useRouter()
   useEffect(() => {

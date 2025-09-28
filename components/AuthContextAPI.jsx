@@ -104,18 +104,17 @@ const [nocRequestLimit, setnocRequestLimit] = useState(10)
 
 
     // Logout Route
-    const handleLogout = async () => {
-        try {
-            await axios.post("/api/auth/logout");
-            setfetchedUserData(null);
-            setuserId(null);
-            window.location.href = "/login"
-            //    router.replace("/login")
+  const handleLogout = async () => {
+  try {
+    await axios.post("/api/auth/logout"); // must clear cookie
+    setfetchedUserData(null);
+    setuserId(null);
+    router.replace("/login"); // ⬅️ replace instead of push
+  } catch (error) {
+    console.error("Logout failed:", error);
+  }
+};
 
-        } catch (error) {
-            console.error("Logout failed:", error);
-        }
-    };
 
 // Fetch All Teachers Only
     const fetchAllTeachersOnly = async () => {

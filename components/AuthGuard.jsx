@@ -1,67 +1,64 @@
-'use client'
+"use client";
 
-import { useWholeApp } from "./AuthContextAPI"
-
-
-
-const { default: axios } = require("axios")
-const { useRouter, usePathname } = require("next/navigation")
-const { useEffect, useState } = require("react")
-
+import { useWholeApp } from "./AuthContextAPI";
+import axios from "axios";
+import { useRouter, usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 
 const AuthGuard = () => {
-  const router = useRouter()
-  const pathname = usePathname()
-     const [token, settoken] = useState(null)
-  const { fetchedUserData } = useWholeApp()
-  // console.log(fetchedUserData)
+  const router = useRouter();
+  const pathname = usePathname();
+  const { fetchedUserData } = useWholeApp();
 
+  const [token, setToken] = useState(undefined); // undefined = still checking
+
+  // Check token on mount + route change
   useEffect(() => {
     const fetchAuthorizeToken = async () => {
       try {
-        const resp = await axios.get('/api/auth/user')
-        settoken(resp?.data?.user)
-      } catch (error) {
-        console.error('Token fetch error:', error)
-        settoken(null)
+        const resp = await axios.get("/api/auth/user");
+        setToken(resp?.data?.user || null);
+      } catch {
+        setToken(null);
       }
-    }
-    fetchAuthorizeToken()
-  }, [pathname])
-useEffect(() => {
-  // 1. Still loading → do nothing
-  if (token === null || fetchedUserData === null) return;
+    };
+    fetchAuthorizeToken();
+  }, [pathname]);
 
-  const isPublicPage = pathname === '/login' ||pathname === '/';
-  const isLoggedIn = !!token?.id; // true if token exists
-  const role = fetchedUserData?.user?.role;
-  // 2. If NOT logged in
-  if (!isLoggedIn) {
-    if (!isPublicPage) {
-      router.push('/login'); // always go to login first
+  useEffect(() => {
+    if (token === undefined || fetchedUserData === null) return; // still checking
+
+    const isPublicPage = pathname === "/login" || pathname === "/";
+    const isLoggedIn = !!token?.id;
+    const role = fetchedUserData?.user?.role;
+
+    // Not logged in → block access
+    if (!isLoggedIn && !isPublicPage) {
+      router.replace("/login");
+      return;
     }
-    return;
+
+    // Logged in but tries to visit /login
+    if (isLoggedIn && pathname === "/login") {
+      if (role === "student") router.replace("/home");
+      else if (role === "teacher") router.replace("/admin");
+      else if (role === "superadmin") router.replace("/superadmin");
+      return;
+    }
+
+    // Role mismatches
+    if (role === "student" && pathname.startsWith("/admin")) router.replace("/home");
+    if (role === "teacher" && pathname.startsWith("/home")) router.replace("/admin");
+    if (role === "superadmin" && (pathname.startsWith("/home") || pathname.startsWith("/admin")))
+      router.replace("/superadmin");
+  }, [token, fetchedUserData, pathname, router]);
+
+  // Show nothing while checking
+  if (token === undefined) {
+    return null
   }
 
-  // 3. If logged in but tries to visit login page → send to home
-  if (isLoggedIn && pathname === '/login') {
-    if (role === 'student') {
-      router.push('/home');
-    } else if (role === 'teacher') {
-      router.push('/admin');
-    }
-    return;
-  }
+  return null;
+};
 
- if (role === 'student' && pathname.startsWith('/admin')) {
-    router.push('/home');
-  } else if (role === 'teacher' && pathname.startsWith('/home')) {
-    router.push('/admin');
-  }
-
-}, [token, fetchedUserData, pathname, router]);
-
-  return null
-
-}
-export default AuthGuard
+export default AuthGuard;

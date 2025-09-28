@@ -26,14 +26,26 @@ import {
   SidebarFooter,
   SidebarHeader,
   SidebarRail,
+  useSidebar,
 } from "@/components/ui/sidebar"
 import { useWholeApp } from "./AuthContextAPI"
+import { usePathname } from "next/navigation"
 
 
 export function StudentAppSidebar({
   ...props
 }) {
-const {fetchedUserData} = useWholeApp()
+  const pathname = usePathname();
+  const { setOpen } = useSidebar();
+  const { fetchedUserData } = useWholeApp();
+
+  // 👉 Close sidebar only on mobile after route change
+  React.useEffect(() => {
+    const isMobile = window.innerWidth <= 768; // simpler than matchMedia
+    if (isMobile) {
+      setOpen(false);
+    }
+  }, [pathname, setOpen]);
   const data = {
   user: {
     name: fetchedUserData?.user?.name,
