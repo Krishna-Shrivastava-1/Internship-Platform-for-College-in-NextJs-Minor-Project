@@ -473,7 +473,7 @@ export function StudentInternsipDataTable({studentInternData = []}) {
     const [rowSelection, setRowSelection] = React.useState({})
   
     const table = useReactTable({
-        data: studentInternData || [],
+        data: studentInternData?.reverse() || [],
         columns,
         onSortingChange: setSorting,
         onColumnFiltersChange: setColumnFilters,

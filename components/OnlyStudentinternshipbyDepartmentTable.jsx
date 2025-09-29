@@ -47,7 +47,7 @@ const years = Array.from({ length: 6 }, (_, i) => currentYear - 2 + i)
     // console.log(page)
   return (
     <div>
-    <div className='w-full flex items-center justify-evenly flex-wrap'>
+    <div className='w-full flex items-center justify-end flex-wrap'>
         <Select onValueChange={(value) => setsessionYear(value)}>
   <SelectTrigger>
     <SelectValue placeholder="Select Year" />

@@ -6,20 +6,21 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-export async function uploadCloudinaryBanner(buffer, fileName = Date.now().toString()) {
-  return new Promise((resolve, reject) => {
-    const uploadStream = cloudinary.uploader.upload_stream(
-      {
-        resource_type: "auto",   // auto-detect (image, pdf, etc.)
-        folder: "Banner Image",   // folder in Cloudinary
-        public_id: fileName,     // unique name
-      },
-      (error, result) => {
-        if (error) return reject(error);
-        resolve(result);
-      }
-    );
+export async function uploadCloudinary(file, fileName = Date.now().toString()) {
+  // file is the FormData file object
+  const arrayBuffer = await file.arrayBuffer();
+  const buffer = Buffer.from(arrayBuffer);
 
-    uploadStream.end(buffer); // send buffer to Cloudinary
+  // Convert buffer to base64
+  const base64File = `data:${file.type};base64,${buffer.toString("base64")}`;
+
+  // Use normal upload (works reliably on Vercel)
+  const result = await cloudinary.uploader.upload(base64File, {
+    resource_type: "raw", // keep it raw (PDF, DOCX, etc.)
+    folder: "OfferLetter",
+    public_id: fileName,
+    overwrite: true,
   });
+
+  return result;
 }

@@ -45,10 +45,37 @@ if (!isNaN(sessionYear)) {
 if (sessionHalf) {
   query.sessionHalf = sessionHalf;
 }
-console.log('yeat',sessionHalf)
+// console.log('yeat',sessionHalf)
 // Count total first
 const total = await internshipModel.countDocuments(query);
+const currentYear = new Date().getFullYear()
+const years = Array.from({ length: 3 }, (_, i) => currentYear - 2 + i)
+const workTypes = ["Remote", "Onsite", "Hybrid"]
+// As per year Total Internship Count
+const totalInternshipAsPerYear = await Promise.all(
+  years.map(async (year) => {
+    const total = await internshipModel.countDocuments({ sessionYear: year })
+    return { year, total }
+  })
+)
 
+// console.log("yearCount", totalInternshipAsPerYear)
+
+
+// As per year worktype internship count
+const internshipStats = await Promise.all(
+  years.map(async (year) => {
+    const workTypeCounts = await Promise.all(
+      workTypes.map(async (wt) => {
+        const count = await internshipModel.countDocuments({ sessionYear: year, workType: wt })
+        return { workType: wt, count }
+      })
+    )
+    return { year, workTypeCounts }
+  })
+)
+
+// console.log(JSON.stringify(internshipStats, null))
 // Paginated fetch
 const students = await internshipModel
   .find(query).sort({createdAt:-1})
@@ -61,6 +88,8 @@ return NextResponse.json({
   page,
   limit,
   students,
+internshipStats,
+totalInternshipAsPerYear
 });
 
   } catch (error) {

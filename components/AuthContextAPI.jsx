@@ -27,6 +27,8 @@ export const WholeAppProvider = ({ children }) => {
     const [nocRequestPages, setnocRequestPages] = useState(1)
     const [nocRequestLimit, setnocRequestLimit] = useState(10)
     const [internshipForAllStudentAsPerDeptLimit, setinternshipForAllStudentAsPerDeptLimit] = useState(10)
+    const [internshipStats, setinternshipStats] = useState([])
+    const [totalInternshipAsPerYear, settotalInternshipAsPerYear] = useState([])
     // Get UserId
     useEffect(() => {
         const userIdfunc = async () => {
@@ -177,7 +179,7 @@ const handleLogout = async () => {
     // const pend = yu.map((e)=>e)
     //   console.log(pendingNOtificationNumber?.length)
 
-
+// On Admin Page Api To Get The Student Data and Apply Filtration 
     const fetchinternshipdatawithquery = async () => {
         try {
 
@@ -197,6 +199,9 @@ const handleLogout = async () => {
                 // console.log(params)
                 const resp = await axios.get(`/api/internshipcollection/getinternshipasperdept`, { params })
                 if (resp.data) {
+                    // console.log(resp?.data)
+                    settotalInternshipAsPerYear(resp?.data?.totalInternshipAsPerYear)
+                    setinternshipStats(resp?.data?.internshipStats)
                     setinternshipDatawithFiltration(resp?.data?.students)
                     settotalPages(Math.ceil(resp.data.total / params.limit))
 
@@ -255,7 +260,9 @@ const handleLogout = async () => {
             nocRequestLimit,
             setnocRequestLimit,
             internshipForAllStudentAsPerDeptLimit,
-            setinternshipForAllStudentAsPerDeptLimit
+            setinternshipForAllStudentAsPerDeptLimit,
+            internshipStats,
+            totalInternshipAsPerYear
         }}>
             {children}
         </AuthContext.Provider>

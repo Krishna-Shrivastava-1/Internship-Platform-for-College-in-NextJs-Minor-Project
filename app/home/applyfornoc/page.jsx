@@ -12,6 +12,7 @@ import { toast } from 'sonner'
 const page = () => {
     const {fetchedUserData} = useWholeApp()
     const [loading, setloading] = useState(true)
+    const [noc, setNoc] = useState(null);
     useEffect(() => {
       if(fetchedUserData && fetchedUserData?.user){
         setloading(false)
@@ -21,6 +22,9 @@ const page = () => {
     // console.log(fetchedUserData)
     const sendNocRequest=async (internId) => {
      try {
+        if (noc) return;  
+
+    setNoc({ approvedornotbyteacher: "Pending" });
      const resp =  await axios.post(`/api/noc/createnocrequest`,{
         studentId: fetchedUserData?.user?._id ,
         internshipId :internId ,
@@ -40,7 +44,7 @@ const page = () => {
     }
 
   return (
-    <div className='m-2 mx-3'>
+    <div className='m-2 mx-3 z-10'>
       <h1>Select Internship for NOC Apply</h1>
       {
         loading ?
@@ -49,7 +53,7 @@ const page = () => {
         </div>
         :
         fetchedUserData?.user?.internshipDetails?.length>0?
- <Table>
+ <Table >
         {/* <TableCaption>A list of your recent invoices.</TableCaption> */}
         <TableHeader>
           <TableRow>
@@ -89,8 +93,37 @@ const noc = fetchedUserData?.user?.appliednocrequest?.find(
        {/* <Button onClick={() => sendNocRequest(internship?._id)}>
   Apply
 </Button> */}
+{noc?.approvedornotbyteacher ? (
+  // If NOC exists, show status
+  <div className="font-medium capitalize">
+    {noc.approvedornotbyteacher === "Approved" ? (
+      <span className="rounded-full px-2 py-1 text-center border font-semibold border-green-600 text-green-500 bg-green-500/20">
+        Approved
+      </span>
+    ) : noc.approvedornotbyteacher === "Rejected" ? (
+      <span className="rounded-full px-2 py-1 text-center border border-red-800 text-red-600 font-semibold bg-red-500/20">
+        Rejected
+      </span>
+    ) : (
+      // Pending case
+      <span className="rounded-full px-2 py-1 text-center border border-yellow-600 text-yellow-600 font-semibold bg-yellow-500/20">
+        Pending
+      </span>
+    )}
+  </div>
+) : (
+  // No NOC yet → show button
+  <Button
+    onClick={() => sendNocRequest(internship?._id)}
+    disabled={!!noc} // disable after click
+    className="bg-neutral-800 hover:bg-neutral-700 text-white font-semibold"
+  >
+    Apply Now
+  </Button>
+)}
 
-       <Button
+      
+       {/* <Button
        onClick={() => sendNocRequest(internship?._id)}
   className={
     noc?.approvedornotbyteacher === "Approved"
@@ -101,7 +134,7 @@ const noc = fetchedUserData?.user?.appliednocrequest?.find(
   }
 >
   {noc ? noc.approvedornotbyteacher : "Apply Now"}
-</Button>
+</Button> */}
 
       </TableCell>
     </TableRow>

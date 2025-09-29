@@ -1,6 +1,8 @@
 'use client'
+import { AdminPageCharts } from '@/components/AdminPageCharts'
 import { useWholeApp } from '@/components/AuthContextAPI'
 import OnlyStudentinternshipbyDepartmentTable from '@/components/OnlyStudentinternshipbyDepartmentTable'
+import SpotlightCard from '@/components/SpotlightCard'
 import { StudentTable } from '@/components/StudentTable'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -10,10 +12,9 @@ import { useRouter } from 'next/navigation'
 import React from 'react'
 
 const page = () => {
-  const {fetchedUserData } = useWholeApp()
-  
-   
- 
+  const {fetchedUserData,internshipStats ,totalInternshipAsPerYear} = useWholeApp()
+  // console.log(internshipStats)
+  // console.log(totalInternshipAsPerYear)
   return (
     <div className='m-2 mx-3'>
       {
@@ -21,9 +22,25 @@ const page = () => {
         <div>
  <h1 className='text-white text-center font-semibold text-2xl'>Hi, {fetchedUserData?.user?.name}</h1>
       <h1 className='text-white text-center font-semibold text-xl'>Department of {fetchedUserData?.user?.department}</h1>
- 
+<div className='w-full flex items-center md:flex-nowrap justify-center flex-wrap-reverse'>
+   <div className='w-full '>
+  <AdminPageCharts />
+ </div>
+ <div className='text-white'>
+{
+  totalInternshipAsPerYear?.map((e,index)=>(
+    <SpotlightCard key={index}  className="custom-spotlight-card my-2 m-3 text-center md:flex items-center justify-center flex-col" spotlightColor="#332b42">
+
+      <h1 className='text-left text-lg font-semibold'> Total Internship of year {e?.year}</h1>
+      <h1 className='font-bold text-xl'>{e?.total}</h1>
+</SpotlightCard>
+    
+  ))
+}
+ </div>
+</div>
   <div className="">
-      <h1 className="font-semibold text-lg">All Students with Only Internship</h1>
+      <h1 className="font-semibold text-lg mt-3">All Students with Only Internship</h1>
 
       <OnlyStudentinternshipbyDepartmentTable  />
      
