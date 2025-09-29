@@ -21,9 +21,8 @@ export async function POST(req) {
 if (file) {
   console.log("📄 File detected:", file.name, file.type);
   try {
-    const bytes = await file.arrayBuffer();
-    const buffer = Buffer.from(bytes);
-    const uploaded = await uploadCloudinary(buffer, `offer_${Date.now()}`);
+  const uploaded = await uploadCloudinary(file, `offer_${Date.now()}`);
+
     uploadedResumeURL = uploaded?.secure_url || "";
   } catch (err) {
     console.error("❌ Cloudinary upload failed:", err);
