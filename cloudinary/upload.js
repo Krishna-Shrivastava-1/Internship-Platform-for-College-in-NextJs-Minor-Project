@@ -1,3 +1,4 @@
+export const runtime = "node";
 import { v2 as cloudinary } from "cloudinary";
 
 cloudinary.config({
