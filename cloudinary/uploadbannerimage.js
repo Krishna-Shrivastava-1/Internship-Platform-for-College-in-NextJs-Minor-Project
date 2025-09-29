@@ -6,7 +6,7 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-export async function uploadCloudinary(file, fileName = Date.now().toString()) {
+export async function uploadCloudinaryBanner(file, fileName = Date.now().toString()) {
   // file is the FormData file object
   const arrayBuffer = await file.arrayBuffer();
   const buffer = Buffer.from(arrayBuffer);
