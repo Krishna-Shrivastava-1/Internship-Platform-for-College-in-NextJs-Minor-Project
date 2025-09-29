@@ -100,7 +100,7 @@ export async function POST(req) {
   } catch (error) {
     console.error("Internship POST error:", error);
     return NextResponse.json(
-      { message: "Error creating internship", success: false },
+      { message: "Error creating internship", success: false,error:error?.message },
       { status: 500 }
     );
   }
