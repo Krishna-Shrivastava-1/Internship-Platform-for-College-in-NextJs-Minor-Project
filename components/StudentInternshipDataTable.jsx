@@ -253,8 +253,7 @@ export const columns = [
         workType,
         jobDescription,
         role,
-        sessionYear,
-        sessionHalf
+     
     };
 
     try {
