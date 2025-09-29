@@ -50,7 +50,7 @@ const page = () => {
                 toast.error(resp?.data?.message)
 
             }
-            // console.log(resp)
+            console.log(resp?.data?.rolep)
             if (resp?.data?.success && resp?.data?.role === 'superadmin') {
                 toast.success(resp?.data?.message)
                 router.push('/superadmin')

@@ -29,7 +29,7 @@ const AuthGuard = () => {
     const isPublicPage = pathname === '/login' || pathname === '/'
     const isLoggedIn = !!token?.id
     const role = fetchedUserData?.user?.role
-
+// console.log(role)
     // No token → redirect immediately
     if (!isLoggedIn && !isPublicPage) {
       router.replace('/login')
@@ -45,10 +45,27 @@ const AuthGuard = () => {
     }
 
     // Role-based protection
-    if (role === 'student' && pathname.startsWith('/admin') || pathname.startsWith('/superadmin'))  router.replace('/home')
-    if (role === 'teacher' && pathname.startsWith('/home') || pathname.startsWith('/superadmin')) router.replace('/admin')
-    if (role === 'superadmin' && (pathname.startsWith('/home') || pathname.startsWith('/admin')))
-      router.replace('/superadmin')
+   if (
+  role === 'student' &&
+  (pathname.startsWith('/admin') || pathname.startsWith('/superadmin'))
+) {
+  router.replace('/home')
+}
+
+if (
+  role === 'teacher' &&
+  (pathname.startsWith('/home') || pathname.startsWith('/superadmin'))
+) {
+  router.replace('/admin')
+}
+
+if (
+  role === 'superadmin' &&
+  (pathname.startsWith('/home') || pathname.startsWith('/admin'))
+) {
+  router.replace('/superadmin')
+}
+
 
   }, [token, fetchedUserData, pathname, router])
 
