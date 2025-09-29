@@ -6,48 +6,7 @@ import { NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
 import { userModel } from "@/models/User";
 import { uploadCloudinary } from "@/cloudinary/upload";
-// export async function POST(req) {
-//     try {
-//         const body = await req.json();
-//         await database()
-        
-//     const formData = await req.formData();
 
-//     const file = formData.get("offerLetter");
-
-
-//     const bytes = await file.arrayBuffer()
-//     const buffer = Buffer.from(bytes)
-//     const getUploadedResumeUrl = await uploadCloudinary(buffer)
-//     const uploadedResumeURL = getUploadedResumeUrl?.secure_url
-// // console.log(body)
-//         const token = (await cookies()).get("authtoken")?.value;
-//         if (!token) {
-//             return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
-//         }
-
-//         const decoded = jwt.verify(token, process.env.Secretkey);
-// const userDept = await userModel.findById(decoded.id);
-//         // Force attach student id from token
-//         const internship = await internshipModel.create({
-//             ...body,
-//             student: decoded.id,
-//             department: userDept.department
-//         });
-//         const user = await userModel.findByIdAndUpdate(decoded.id,{
-//             $addToSet:{internshipDetails:internship?._id}
-//         },{new:true})
-//         return NextResponse.json({
-//             message: "Internship created successfully",
-//             success: true,
-//             internship,
-//             user
-//         });
-
-//     } catch (error) {
-//         return NextResponse.json({ error: 'Server error', status: 403 ,message:error.message});
-//     }
-// }
 
 export async function POST(req) {
   try {
@@ -100,8 +59,8 @@ export async function POST(req) {
   } catch (error) {
     console.error("Internship POST error:", error);
     return NextResponse.json(
-      { message: "Error creating internship", success: false,error:error?.message },
-      { status: 500 }
-    );
+    { message: "Error creating internship", success: false, error: error?.message },
+    { status: 500 }
+  );
   }
 }
