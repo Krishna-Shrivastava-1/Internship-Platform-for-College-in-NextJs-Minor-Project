@@ -17,14 +17,20 @@ export async function POST(req) {
 
     const file = formData.get("offerLetter");
 
-    let uploadedResumeURL = "";
-    if (file) {
-      console.log("📄 File detected:", file.name, file.type);
-      const bytes = await file.arrayBuffer();
-      const buffer = Buffer.from(bytes);
-      const uploaded = await uploadCloudinary(buffer, `offer_${Date.now()}`);
-      uploadedResumeURL = uploaded?.secure_url || "";
-    }
+ let uploadedResumeURL = "";
+if (file) {
+  console.log("📄 File detected:", file.name, file.type);
+  try {
+    const bytes = await file.arrayBuffer();
+    const buffer = Buffer.from(bytes);
+    const uploaded = await uploadCloudinary(buffer, `offer_${Date.now()}`);
+    uploadedResumeURL = uploaded?.secure_url || "";
+  } catch (err) {
+    console.error("❌ Cloudinary upload failed:", err);
+    return NextResponse.json({ message: "Cloudinary upload failed", error: err?.message }, { status: 500 });
+  }
+}
+
 
     const token = (await cookies()).get("authtoken")?.value;
     if (!token) {
